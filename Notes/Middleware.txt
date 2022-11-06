@@ -1,0 +1,52 @@
+﻿Middleware
+ПО серединного слоя
+Идея: обработка запроса происходит поэтапно (слоями ПО)
+(см картинку на сайте https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-6.0)
+Новое ПО может быть "всторено" в процесс обработки запроса
+в промежуток между другими слоями.
+
+Зачем? Для того чтобы иметь возможность выполнить определенные действия
+в любом случае, независимо от запрошенного ресурса (контроллера)
+Например авторизация - ее нужно проверять для всех запросов.
+Также подключение к БД, логирование (ведение журнала запросов)
+
+Как? ПО можно "подключить" несколькими способами
+а) app.Run( context => {...} )
+б) app.Use( async (context, next) => { part1;  await next();  part2; })
+в) app.UseMiddleware<MyClass>()   https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/write?view=aspnetcore-6.0
+г) расширения app.UseMyClass()
+
+Пример-задание: перенести задачу авторизации (по данным в сессии)
+в Middleware
+- создаем папку Middleware
+- в ней описываем класс SessionAuthMiddleware (дальше комментарии в классе)
+- в Program/Startup добавляем подключение app.UseMiddleware<Middleware.SessionAuthMiddleware>();
+- В этой же папке создаем класс для расширения SessionAuthExtension
+
+Служба получения авторизованного пользователя: 
+заявляем как зависимость там, где нужны данные об авторизации
+- создаем в папке Services интерфейс IAuthService
+- создаем в папке Services класс SessionAuthService
+- регистрируем службу !!! т.к. служба зависит от контекста данных, 
+   она не может иметь дольшее время жизни, чем контекст (Scoped) --
+   зарегистрировать службу как Singleton невозможно (приводит к исключению)
+- заявляем зависимость от службы авторизации в SessionAuthMiddleware
+
+
+Д.З. Перенести в службу авторизации коды проверки длительности сеанса и его
+разрушения после истечения срока.
+Переделать контроллеры на работу с новой службой (убрать из них старые коды
+авторизации)
+
+
+            err
+             | 
+request1  \  M   / endpoint1	   request1  -------- endpoint1
+request2  - ---- - endpoint2	   request2  -------- endpoint2
+request3  /  W   \ endpoint3	   request3  -------- endpoint3
+
+                     HomeController(IAuthService)
+                   / 
+request --[    ]-  - AuthController(IAuthService)
+                   \
+                

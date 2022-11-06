@@ -1,0 +1,27 @@
+﻿
+Front                                                 Back
+page1.html
+<a href="page2.html"...  === location = "page2.html"
+      (click) --> 1. Unload (разрушение page1)
+        2. Запрос на Back: GET page2.html  ----------->|
+        3. Ожидание ответа и формирование              |
+           DOM для page2.html        <-----------------|
+page2.html
+Content
+
+page1.html
+<button>Page 2</>
+(click) --> 1. Onclick (page1,никаких переходов)
+ 2. fetch("page2.html")        GET page2.html
+                       ------------------------------>|
+ 3. Конец  Onclick                                    |
+                             <html><head...           |
+ 1. Пришел ответ от Back   <--------------------------|
+ 2. Обрабатываем ответ (.then(r=>r.text()) ) - извлекаем текст из тела
+ 3. Обрабатываем текст, извлеченный в п. 2, например
+     document.documentElement.innerHTML = <text>
+
+page1.html
+Content (page2.html)
+
+

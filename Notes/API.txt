@@ -1,0 +1,33 @@
+﻿API: Application-Program Interface
+Program - "центр", сервер, хранилище данных, Backend
+App - приложение, чаще всего это клиент (мобильное приложение, сайт), Frontend
+
+API - схема, правила взаимодействия центра и приложений
+
+В ASP для разработки API существуют специальные контроллеры
+Основные отличия (от MVC контроллеров):
+- контроллер имеет один маршрут (URL), по умолчанию "api/[controller]"
+- методы контроллера возвращают значения, которые "движком" будут преобразованы в JSON
+- методы контроллера различаются по методам запроса (HTTP):
+   GET /api/user -->  public Get()   можно проверить из браузера
+   PUT /api/user -->  public Put()   надо доп. инструмент: либо JS-fetch, либо Postman
+
+Традиция CRUD - бэкенд должен реализовывать возможности Create Read Update Delete
+Эти задачи распределяют по методам запроса
+GET - Read
+POST - Create	| иногда
+PUT - Update	| наоборот
+DELETE - Delete
+
+REST - используется как синоним API+CRUD
+
+
+Client								  Server (API / REST / CRUD)
+(NOT browser)		GET /api/user		Controller(/api/user)
+HTTP request ----------------------------->   Get() {...}
+					POST /api/news			  Post() {...}	  Controller(/api/news)
+			 ---------------------------|				 	   Get() {...}
+										|------------------->  Post() {...}
+
+
+

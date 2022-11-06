@@ -1,0 +1,42 @@
+﻿@{
+    var user = ViewData["AuthUser"] as Intro.DAL.Entities.User;
+}
+
+<h1>Кабинет пользователя</h1>
+
+@if(user == null)
+{
+    <a href="/Auth">Необходимо авторизоваться</a>
+}
+else{
+    <label for="avatar">
+        <img id="userLogo" src='/img/@user.Avatar' style='max-height:15em;border-radius:50%'/>
+    </label>
+    <br/>
+    <i>Login:</i> <b id='userLogin'>@user.Login</b>
+    <br/>
+    <i>Real name:</i> <span id='userRealName'>@user.RealName</span>
+    <br/>
+    <i>Email:</i> <span id='userEmail'>@user.Email</span>
+
+    <input type="file" id="avatar" style="visibility:hidden" accept="image/*" />
+}
+<script src="/js/profile.js"></script>
+
+Передача файлов асинхронным способом
+1. Устанавливается файловый input, но его стараются скрыть. Для обеспечения активности
+для него ставят label
+2. Для файлового элемента устанавливают обработчик события change (или отдельная
+кнопка для изменения)
+
+
+Домашнее задание: реализовать в кабинете пользователя возможность
+изменения пароля
+Установить ПО Postman
+
+@if(user != null)
+{
+    <h2>Удаленные сообщения</h2>
+    <junk></junk>
+    <script src="~/js/junk.js"></script>
+}

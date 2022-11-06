@@ -1,0 +1,38 @@
+﻿@using Intro.DAL.Entities
+@{
+     ViewData["Title"] = "Topic Page";
+}
+<p>
+    @ViewData["id"]
+</p>
+
+<articles topic-id='@ViewData["id"]'></articles>
+
+@if(ViewData["AuthUser"] == null) {
+    <i>Необходимо войти в систему </i>
+}
+else {
+    <b>Добавить комментарий</b>
+    <br/>
+    <textarea id="article-text" 
+        data-author-id='@((ViewData["AuthUser"] as User).Id)' 
+        data-topic-id='@ViewData["id"]'
+        data-reply-id=''
+    ></textarea>
+    <br/>
+    <span>Добавить картинку: </span>
+    <input type="file" name="picture" />
+    <br/>
+    <button id="button-publish">Опубликовать</button>
+}
+<script src="~/js/topic.js"></script>
+
+<!-- 
+    Д.З. Включить данные о author-id topic-id в страницу,
+    По нажатию кнопки "Опубликовать" вывести данные в консоль:
+    author-id
+    topic-id 
+    text
+    date-time
+    ** добавить загрузку картинки (файла)
+-->

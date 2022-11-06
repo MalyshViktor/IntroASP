@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<p id="rndNumber">
+    @Html.Raw( ViewData["rnd"] )
+</p>
+<i>
+    @ViewBag.hash
+</i>
+<br>
+<i>
+   Date - Long format: @ViewBag.dateLong
+</i>
+<br>
+
+<i>
+    Time - Long Format: @ViewBag.timeLong
+</i>
+<br>
+<i>
+   Date - Short format: @ViewBag.date
+</i>
+<br>
+
+<i>
+    Time - Short Format: @ViewBag.time
+</i>
+<br>
+
+
+
+<p>
+    Users Count: @ViewData["UsersCount"]
+</p>
+
+<p>
+    @* Вывод на стартовой странице всех
+ * зарегистрированных пользователей*@
+    Users Name: 
+    @foreach (var names in ViewBag.RealName)
+    {
+         <br/>
+        @names
+    }
+</p>
+
+<p>
+    fromAuthMiddleware @ViewData["fromAuthMiddleware"];
+</p>
+<p>
+    authUserName @ViewData["authUserName"]
+</p>
+<script>
+setInterval(
+    ()=>{ 
+        fetch("/Home/Random")
+        .then(r => r.text())
+        .then(t => rndNumber.innerText = t)
+    },
+    1000
+)
+</script>

@@ -1,0 +1,49 @@
+﻿@{
+    var err = ViewData["err"] as String[];
+}
+<h1>
+    Регистрация нового пользователя
+</h1>
+
+@ViewData["UserData"]
+
+<form 
+    action="/Auth/RegUser" 
+    method="post" 
+    enctype="multipart/form-data"
+>
+    Имя:    <input type="text"     name="RealName"  />
+    @if (!String.IsNullOrEmpty(err?[1]))
+    {
+        @err[1]
+    }
+    <br/>
+    Логин:  <input type="text"     name="Login"     />
+    @if (!String.IsNullOrEmpty(err?[2]))
+    {
+        @err[2]
+    }
+    <br/>
+    Пароль:   <input type="password" name="Password1" /><br/>
+    Повтор:   <input type="password" name="Password2" /><br/>
+    E-mail:   <input type="email"    name="Email"     /><br/>
+    Аватарка: <input type="file"     name="Avatar"    /><br/>
+    <button type="submit">Зарегистрироваться</button>
+</form>
+
+@{
+    var UserData = ViewData["UserData"] as RegUserModel; 
+}
+@if(UserData?.Avatar != null)
+{
+    <img src="/img/@UserData.Avatar.FileName" />
+}
+
+
+Форма регистрации пользователя:
+Обеспечить вывод сообщений о валидации напротив каждого из полей формы
+Если форма не проходит валидацию, то сохранять в полях формы ранее
+ введенные значения (кроме паролей, поля паролей всегда обновляются)
+!! Реализовать через механизм сессий и перенаправлении пост-запроса
++ добавить проверку на уникальность логина (если есть в БД, 
+   то не регистрировать)
